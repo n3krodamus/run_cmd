@@ -4,6 +4,10 @@ import time
 import subprocess
 import re
 import logging
+import sys
+import os
+
+from dotenv import load_dotenv
 
 #q = queue.Queue()
 #kitty_socket = "unix:/tmp/mykitty"
@@ -114,26 +118,42 @@ def verify_host(h):
 
 
 def connect_host(h):
-    connectionSequence = ['ssh -p2022 ' + h, 'export TERM=xterm', 'clear', 'PS1="\h_RUN_CMD:>"']
-    for command in connectionSequence:
+    connection = read_file(connection_command)
+    connection_sequence = read_file(connection_init)
+
+    for command in connection:
+        run_command(command + " " + h)
+        time.sleep(5)
+
+    for command in connection_sequence:
+        run_command(command)
+        time.sleep(2)
+
+def disconnect(h):
+    disconnection = read_file(disconnection_command)
+    for command in disconnection:
         run_command(command)
         time.sleep(5)
 
-def disconnect(h):
-    disconnectionSequence = ['exit']
-    for command in disconnectionSequence:
-        run_command(command)
-        time.sleep(5)
+def read_file(f):
+    with open(f) as file:
+        data = [line.strip() for line in file]
+    return(data)
 
 
 if __name__ == "__main__":
     # Conf files
-    processed_file = 'conf/processed.txt'
-    pending_file = 'conf/pending.txt'
-    failed_file = 'conf/failed.txt'
-    hosts_file = 'conf/hosts.txt'
-    file_log = 'logs/run.log'
-    kitty_socket = "unix:/tmp/mykitty"
+    conf = load_dotenv('.env')
+    processed_file = os.getenv("PROCESSED_FILE")
+    pending_file = os.getenv("PENDING_FILE")
+    failed_file = os.getenv("FAILED_FILE")
+    hosts_file = os.getenv("HOSTS_FILE")
+    connection_command = os.getenv("CONNECTION_COMMAND")
+    disconnection_command = os.getenv("DISCONNECTION_COMMAND")
+    connection_init = os.getenv("CONNECTION_INIT")
+
+    file_log = os.getenv("FILE_LOG")
+    kitty_socket = os.getenv("KITTY_SOCKET")
 
     # Array de comandos
     commands = ['echo hola mundo', 'lalalalala','echo continuo']
@@ -150,10 +170,10 @@ if __name__ == "__main__":
 
     # Start
     logging.info('Starting process')
-    with open(hosts_file) as file:
-        for line in file:
-            line = line.rstrip('\n')  # preprocess line
-            q.put((line, commands))
+    hosts = read_file(hosts_file)
+    for line in hosts:
+        q.put((line, commands))
+
 
     # Block until all tasks are done.
     q.join()

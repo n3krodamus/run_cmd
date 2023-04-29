@@ -1,0 +1,3 @@
+export TERM=xterm
+clear
+PS1="\h_RUN_CMD:>"

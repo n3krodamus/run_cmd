@@ -1,6 +1,5 @@
-/nohup.out
-/hosts.txt
+.env
 /uninstall.txt
 /.idea/.gitignore
-/logs/
+*.log
 scratch.py
