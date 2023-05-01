@@ -7,7 +7,9 @@ Download kitty: https://sw.kovidgoyal.net/kitty/
 ## Instalacion
 
 ```bash
-git clone repositorio
+git clone https://github.com/n3krodamus/run_cmd.git
+cd run_cmd
+./install.sh
 ```
 
 Luego editar los archivos dentro del directorio conf
@@ -51,5 +53,5 @@ EOF
 ```
 ./launch.sh
 ```
-
+Se lanzara una instancia de kitty y quedara esperando para ejecutar el script run_cmd.py. Mientras este se encuentre en ejecucion la instancia de kitty lanzada tambien permanecera interactiva por si se desea realizar alguna correccion en caliente.
 
