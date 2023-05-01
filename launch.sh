@@ -5,7 +5,7 @@ sleep 2
 
 read -p "Continuar ? (s/n)" ANSWER
 if [[ ${ANSWER} == "s" ]]; then
-  echo lanzando python
+  python main.py
 else
   echo Termino
 fi

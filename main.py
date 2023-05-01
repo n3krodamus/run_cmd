@@ -148,6 +148,8 @@ if __name__ == "__main__":
     pending_file = os.getenv("PENDING_FILE")
     failed_file = os.getenv("FAILED_FILE")
     hosts_file = os.getenv("HOSTS_FILE")
+
+    commands_file = os.getenv("COMMANDS_FILE")
     connection_command = os.getenv("CONNECTION_COMMAND")
     disconnection_command = os.getenv("DISCONNECTION_COMMAND")
     connection_init = os.getenv("CONNECTION_INIT")
@@ -156,7 +158,8 @@ if __name__ == "__main__":
     kitty_socket = os.getenv("KITTY_SOCKET")
 
     # Array de comandos
-    commands = ['echo hola mundo', 'lalalalala','echo continuo']
+    #commands = ['echo hola mundo', 'lalalalala','echo continuo']
+    commands = read_file(commands_file)
     error_flag = False
 
     # Start queue object
